@@ -21,11 +21,13 @@ module.exports = {
       yellow: "#ffc82c",
       "gray-dark": "#273444",
       gray: "#8492a6",
+      red: "red",
       "gray-light": "#d3dce6",
       black: "#000000",
       darkGray: "#5A5A5A",
       gray: "#808080",
       lightGray: "#D3D3D3",
+      white: "#ffffff",
     },
     fontFamily: {
       sans: ["Graphik", "sans-serif"],
