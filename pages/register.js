@@ -9,7 +9,9 @@ import {
   updateProfile,
   GoogleAuthProvider,
   signInWithPopup,
+  onAuthStateChanged,
 } from "firebase/auth";
+import Link from "next/link";
 
 const provider = new GoogleAuthProvider();
 
@@ -20,6 +22,22 @@ const RegisterForm = () => {
   const [formPass, setFormPass] = useState(null);
   const [authError, setAuthError] = useState(null);
   const { authUser, isLoading, setAuthUser } = useAuth();
+
+  const getCurrentUser = () => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+      if (user) {
+        // User is signed in
+        // Do something with the user information
+        console.log("User ID: ", user);
+      } else {
+        // No user is signed in
+        console.log("No user is currently signed in.");
+      }
+    });
+
+    // Unsubscribe from the listener when no longer needed
+    unsubscribe();
+  };
 
   function handleInputChange(e, inputType) {
     if (inputType === "name") {
@@ -58,7 +76,7 @@ const RegisterForm = () => {
         //   email: user.email,
         //   formName,
         // });
-        console.log(user, firebaseAuth);
+        console.log(user);
       } catch (error) {
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -80,7 +98,7 @@ const RegisterForm = () => {
   //google-login
   const signInWithGoogle = async () => {
     const user = await signInWithPopup(firebaseAuth, provider);
-    console.log("sign in with google", user);
+    console.log("sign in with google", user, getCurrentUser());
   };
 
   return (
@@ -95,7 +113,7 @@ const RegisterForm = () => {
           <p className="mt-6 ml-1">
             Already have an account ?{" "}
             <span className="underline hover:text-blue-400 cursor-pointer">
-              Login
+              <Link href="login">Login</Link>
             </span>
           </p>
 

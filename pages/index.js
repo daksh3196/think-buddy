@@ -1,6 +1,7 @@
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
 import { GoSignOut } from "react-icons/go";
+import Link from "next/link";
 const arr = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
@@ -8,9 +9,11 @@ const arr = [
 export default function Home() {
   return (
     <main className="">
-      <div className="bg-white border-darkGray text-white w-44 py-4 mt-10 rounded-lg transition-transform hover:bg-darkGray/[0.8] active:scale-90 flex items-center justify-center gap-2 font-medium shadow-md fixed bottom-5 right-5 cursor-pointer">
+      <div className="bg-white border-darkGray bg-darkGray text-white w-44 py-4  rounded-lg transition-transform hover:bg-darkGray/[0.8] active:scale-90 flex items-center justify-center gap-2 font-medium shadow-md fixed bottom-5 right-5 cursor-pointer">
         <GoSignOut size={18} />
-        <span>Logout</span>
+        <span>
+          <Link href="/register">Register</Link>
+        </span>
       </div>
       <div className="max-w-3xl mx-auto mt-10 p-8">
         <div className="bg-white -m-6 p-3 sticky top-0">
