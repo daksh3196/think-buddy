@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { firebaseAuth } from "@/firebase/firebase";
 import { useAuth } from "../firebase/auth";
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
   GoogleAuthProvider,
@@ -13,17 +12,26 @@ import {
 import Link from "next/link";
 import ForgotPasswordModal from "@/components/ForgotPasswordModal";
 import ClickAwayListener from "@/components/ClickAwayListener";
+import { useRouter } from "next/router";
+import Loader from "@/components/Loader";
 
 const provider = new GoogleAuthProvider();
 
 const LoginForm = () => {
+  const router = useRouter();
+  const { authUser, isLoading } = useAuth();
   const [formEmail, setFormEmail] = useState(null);
   const [formPass, setFormPass] = useState(null);
   const [formErr, setFormErr] = useState(null);
   const [isForgotModalTrue, setIsForgotModalTrue] = useState(false);
 
+  useEffect(() => {
+    if (!isLoading && authUser) {
+      router.push("/");
+    }
+  }, [authUser, isLoading]);
+
   const handleSignIn = async () => {
-    console.log(formEmail, formPass);
     if (!formEmail || !formPass) {
       setFormErr("Please enter valid email and password for authentication.");
       return;
@@ -33,12 +41,10 @@ const LoginForm = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log("error", errorMessage);
           setFormErr(error.message);
         });
     }
@@ -47,10 +53,7 @@ const LoginForm = () => {
   const signInWithGoogle = async () => {
     try {
       const user = await signInWithPopup(firebaseAuth, provider);
-      console.log("sign in with google", user);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   function handleInputChange(e, inputType) {
@@ -65,16 +68,16 @@ const LoginForm = () => {
   }
 
   function onForgotPassword() {
-    console.log("clickk");
     setIsForgotModalTrue(true);
   }
 
   function handleClickAwayEvent(_event) {
-    console.log("handleclickk");
     setIsForgotModalTrue(false);
   }
 
-  return (
+  return isLoading || (!isLoading && !!authUser) ? (
+    <Loader />
+  ) : (
     <main className="flex lg:h-[100vh]">
       <ClickAwayListener>
         <ForgotPasswordModal

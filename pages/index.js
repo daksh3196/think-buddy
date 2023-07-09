@@ -2,17 +2,44 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
 import { GoSignOut } from "react-icons/go";
 import Link from "next/link";
-const arr = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-];
+import { useAuth } from "@/firebase/auth";
+import { useEffect, useState } from "react";
+import Alert from "@/components/alert";
+import { useRouter } from "next/router";
+import Loader from "@/components/Loader";
+const arr = [1, 2];
 
 export default function Home() {
-  return (
+  const router = useRouter();
+  const [showAlert, setShowAlert] = useState(false);
+  const { authUser, isLoading, signOut } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !authUser) {
+      router.push("/login");
+    }
+  }, [authUser, isLoading]);
+  useEffect(() => {
+    if (authUser) {
+      setShowAlert(true);
+      setTimeout(function () {
+        setShowAlert(false);
+      }, 1000);
+    }
+  }, []);
+  return !authUser ? (
+    <Loader />
+  ) : (
     <main className="">
-      <div className="bg-white border-darkGray bg-darkGray text-white w-44 py-4  rounded-lg transition-transform hover:bg-darkGray/[0.8] active:scale-90 flex items-center justify-center gap-2 font-medium shadow-md fixed bottom-5 right-5 cursor-pointer">
+      {/* {showAlert && <Alert message="Logged In!" />} */}
+      <div
+        onClick={signOut}
+        className="order-darkGray bg-black text-white w-44 py-4  rounded-lg transition-transform hover:bg-darkGray/[0.8] active:scale-90 flex items-center justify-center gap-2 font-medium shadow-md fixed bottom-5 right-5 cursor-pointer"
+      >
         <GoSignOut size={18} />
         <span>
-          <Link href="/register">Register</Link>
+          {/* <Link href="/register">Logout</Link> */}
+          Logout
         </span>
       </div>
       <div className="max-w-3xl mx-auto mt-10 p-8">

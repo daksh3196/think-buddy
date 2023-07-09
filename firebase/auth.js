@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { onAuthStateChanged, signOut as authSignOut } from "firebase/auth";
-import { auth } from "./firebase";
+import { firebaseAuth } from "./firebase";
 
 const AuthUserContext = createContext({
   authUser: null,
@@ -27,15 +27,24 @@ export default function useFirebaseAuth() {
       email: user.email,
       username: user.displayName,
     });
+    localStorage.setItem(
+      "loggedInUserInfo",
+      JSON.stringify({
+        uid: user.uid,
+        email: user.email,
+        username: user.displayName,
+      })
+    );
     setIsLoading(false);
   };
 
   const signOut = () => {
-    authSignOut(auth).then(() => clear());
+    authSignOut(firebaseAuth).then(() => clear());
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, authStateChanged);
+    const unsubscribe = onAuthStateChanged(firebaseAuth, authStateChanged);
     return () => unsubscribe();
   }, []);
 

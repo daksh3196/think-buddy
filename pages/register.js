@@ -23,19 +23,18 @@ const RegisterForm = () => {
   const [authError, setAuthError] = useState(null);
   const { authUser, isLoading, setAuthUser } = useAuth();
 
+  useEffect(() => {
+    if (!isLoading && authUser) {
+      router.push("/");
+    }
+  }, [authUser, isLoading]);
+
   const getCurrentUser = () => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
-        // User is signed in
-        // Do something with the user information
-        console.log("User ID: ", user);
       } else {
-        // No user is signed in
-        console.log("No user is currently signed in.");
       }
     });
-
-    // Unsubscribe from the listener when no longer needed
     unsubscribe();
   };
 
@@ -54,7 +53,6 @@ const RegisterForm = () => {
 
   //email-password login
   const onFormSubmit = async () => {
-    console.log(formName, formEmail, formPass);
     if (!formName) {
       setAuthError("Please enter a valid Name");
       return;
@@ -71,12 +69,11 @@ const RegisterForm = () => {
         await updateProfile(firebaseAuth.currentUser, {
           displayName: formName,
         });
-        // setAuthUser({
-        //   uid: user.uid,
-        //   email: user.email,
-        //   formName,
-        // });
-        console.log(user);
+        setAuthUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: formName,
+        });
       } catch (error) {
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -88,8 +85,6 @@ const RegisterForm = () => {
         ) {
           setAuthError(errorMessage);
         }
-        console.log(error);
-        console.error("logging sign up console error", error);
       }
     }
     // e.preventDefault();
@@ -98,14 +93,11 @@ const RegisterForm = () => {
   //google-login
   const signInWithGoogle = async () => {
     const user = await signInWithPopup(firebaseAuth, provider);
-    console.log("sign in with google", user, getCurrentUser());
   };
 
-  return (
-    //   return isLoading || (!isLoading && !!authUser) ? (
-    //     <Loader />
-    //   ) :
-    //   (
+  return isLoading || (!isLoading && !authUser) ? (
+    <Loader />
+  ) : (
     <main className="flex lg:h-[100vh]">
       <div className="w-full lg:w-[60%] p-8 md:p-14 flex items-center justify-center lg:justify-start">
         <div className="p-8 w-[600px]">
