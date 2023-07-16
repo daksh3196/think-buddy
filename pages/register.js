@@ -95,7 +95,7 @@ const RegisterForm = () => {
     const user = await signInWithPopup(firebaseAuth, provider);
   };
 
-  return isLoading || (!isLoading && !authUser) ? (
+  return isLoading || (!isLoading && !!authUser) ? (
     <Loader />
   ) : (
     <main className="flex lg:h-[100vh]">

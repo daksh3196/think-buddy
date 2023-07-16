@@ -18,3 +18,26 @@
     margin: 0;
     padding: 0;
 }
+
+#__next{
+    height: 100vh;
+}
+
+.error-div{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.next-error-h1{
+    display: inline-block;
+    margin: 0 20px 0 0;
+    padding-right: 23px;
+    font-size: 24px;
+    font-weight: 500;
+    vertical-align: top;
+    line-height: 49px;
+    border-right: 1px solid rgba(0, 0, 0, .3);
+}
