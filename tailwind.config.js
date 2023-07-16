@@ -28,6 +28,11 @@ module.exports = {
       gray: "#808080",
       lightGray: "#D3D3D3",
       white: "#ffffff",
+      lightThemeBrown: "#8b4a20",
+      lightThemeCream: "#fff6de",
+      lightThemePale: "#fefee2",
+      lightThemePink: "#eeb8af",
+      lightThemeBlue: "#c4d9e8",
     },
     fontFamily: {
       sans: ["Graphik", "sans-serif"],

@@ -44,12 +44,12 @@ export default function Home() {
       </div>
       <div className="max-w-3xl mx-auto mt-10 p-8">
         <div className="bg-white -m-6 p-3 sticky top-0">
-          <div className="flex justify-center flex-col items-center">
+          {/* <div className="flex justify-center flex-col items-center">
             <span className="text-7xl mb-10">📝</span>
             <h1 className="text-5xl md:text-7xl font-bold">
               {process.env.APP_NAME}
             </h1>
-          </div>
+          </div> */}
           <div className="flex items-center gap-2 mt-10">
             <input
               placeholder={`👋 Hello name, What to do Today?`}
